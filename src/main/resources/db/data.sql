@@ -1,0 +1,3 @@
+INSERT INTO pagamentos (valor, nome, numero, expiracao, codigo, status, forma_de_pagamento_id, pedido_id) VALUES (100.50, 'João Silva', '1234567890123456', '12/2025', '123', 'PAGO', 1, 1),
+INSERT INTO pagamentos (valor, nome, numero, expiracao, codigo, status, forma_de_pagamento_id, pedido_id) VALUES (250.75, 'Maria Oliveira', '6543210987654321', '11/2024', '456', 'PENDENTE', 2, 2),
+INSERT INTO pagamentos (valor, nome, numero, expiracao, codigo, status, forma_de_pagamento_id, pedido_id) VALUES (300.00, 'Carlos Souza', '1111222233334444', '10/2023', '789', 'CANCELADO', 3, 3);
