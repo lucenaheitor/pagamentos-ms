@@ -2,6 +2,8 @@ package lucenaheitor.pagamentos_ms.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lucenaheitor.pagamentos_ms.dto.PagamentoDto;
+
+import lucenaheitor.pagamentos_ms.http.AgendaClient;
 import lucenaheitor.pagamentos_ms.model.Pagamento;
 import lucenaheitor.pagamentos_ms.model.Status;
 import lucenaheitor.pagamentos_ms.repository.PagamentoRepository;
@@ -21,6 +23,9 @@ public class PagamentoService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+   @Autowired
+   private AgendaClient agenda;
 
 
 
@@ -56,6 +61,30 @@ public class PagamentoService {
         repository.deleteById(id);
     }
 
+    public void confirmarPagamento(Long id){
+        Optional<Pagamento> pagamento = repository.findById(id);
+
+        if (!pagamento.isPresent()) {
+            throw new EntityNotFoundException();
+        }
+
+        pagamento.get().setStatus(Status.CONFIRMADO);
+        repository.save(pagamento.get());
+        agenda.updatePayment(pagamento.get().getAgendaId());
+    }
+
+
+    public void alteraStatus(Long id) {
+        Optional<Pagamento> pagamento = repository.findById(id);
+
+        if (!pagamento.isPresent()) {
+            throw new EntityNotFoundException();
+        }
+
+        pagamento.get().setStatus(Status.CONFIRMADO_SEM_INTEGRACAO);
+        repository.save(pagamento.get());
+
+    }
     
 }
 

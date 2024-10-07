@@ -52,7 +52,7 @@ public class Pagamento {
     private Status status;
 
     @NotNull
-    private Long pedidoId;
+    private Long AgendaId;
 
     @NotNull
     private Long formaDePagamentoId;
