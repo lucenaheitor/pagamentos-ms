@@ -6,7 +6,9 @@ import lucenaheitor.pagamentos_ms.model.Status;
 import lucenaheitor.pagamentos_ms.repository.PagamentoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class PagamentoServiceTest {
 
     @Autowired
@@ -77,14 +80,14 @@ class PagamentoServiceTest {
             1L
     );
 
-        // Mocka busca do pagamento existente
+
         when(pagamentoRepository.findById(1L)).thenReturn(java.util.Optional.of(pagamento));
         when(modelMapper.map(dto, Pagamento.class)).thenReturn(pagamento);
 
-        // Atualiza o status para CONFIRMADO no método de serviço
+
         pagamento.setStatus(Status.CONFIRMADO);
 
-        // Mock do retorno do DTO atualizado
+
         when(modelMapper.map(pagamento, PagamentoDto.class)).thenReturn(dto);
 
         PagamentoDto resultado = pagamentoService.atualizarPagamento(1L, dto);
@@ -109,11 +112,34 @@ class PagamentoServiceTest {
                 1L
 
         );
-        when(pagamentoRepository.findById(1L)).thenReturn(java.util.Optional.of(pagamento));
+        pagamento.setStatus(Status.CONFIRMADO);
 
+        when(pagamentoRepository.findById(1L)).thenReturn(java.util.Optional.of(pagamento));
+        when(modelMapper.map(pagamento, PagamentoDto.class)).thenReturn(pagamentoDto);
+
+        assertEquals(Status.CONFIRMADO, pagamento.getStatus());
     }
 
     @Test
     void alteraStatus() {
+        Pagamento pagamento  = new Pagamento(
+                1L,
+                new BigDecimal("100.00"),
+                "Teste",
+                "123456789123456",
+                "12/24",
+                "123",
+                Status.CRIADO,
+                1L,
+                1L
+        );
+
+        pagamento.setStatus(Status.CONFIRMADO);
+
+        when((pagamentoRepository.findById(1L))).thenReturn(java.util.Optional.of(pagamento));
+        when(modelMapper.map(pagamento, PagamentoDto.class)).thenReturn(pagamentoDto);
+
+        assertEquals(Status.CONFIRMADO, pagamento.getStatus());
+
     }
 }
